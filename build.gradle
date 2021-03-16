@@ -3,15 +3,17 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'jacoco'
+    id 'java-library'
 }
 
-group = 'gk'
-version = '0.0.1-SNAPSHOT'
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(11)
     }
 }
+
+group = 'gk'
+version = '0.0.1-SNAPSHOT'
 
 // does not find test without this 👇
 ext['junit-jupiter.version']   = '5.4.0'
