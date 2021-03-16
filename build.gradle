@@ -7,7 +7,6 @@ plugins {
 
 group = 'gk'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '15'
 
 // does not find test without this 👇
 ext['junit-jupiter.version']   = '5.4.0'
