@@ -5,6 +5,7 @@ import gk.recipeapp.converters.RecipeCommandToRecipe;
 import gk.recipeapp.converters.RecipeToRecipeCommand;
 import gk.recipeapp.domain.Recipe;
 import gk.recipeapp.repositories.RecipeRepository;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Disabled
 @SpringBootTest
 public class RecipeServiceIT {
     private static final String NEW_DESCRIPTION = "New description";
@@ -28,6 +30,7 @@ public class RecipeServiceIT {
     @Autowired
     RecipeToRecipeCommand recipeToRecipeCommand;
 
+    @Disabled
     @Test
     @DisplayName("test save of description")
     void testSaveOfDescription() {
