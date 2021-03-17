@@ -13,6 +13,7 @@ import java.util.Set;
 @Setter
 @Document
 public class Recipe {
+
     @Id
     private String id;
     private String description;
@@ -22,22 +23,22 @@ public class Recipe {
     private String source;
     private String url;
     private String directions;
+    private Set<Ingredient> ingredients = new HashSet<>();
     private Byte[] image;
     private Difficulty difficulty;
     private Notes notes;
-    private final Set<Ingredient> ingredients = new HashSet<>();
-    @DBRef
-    private final Set<Category> categories = new HashSet<>();
 
-    public void setNotes(final Notes notes) {
+    @DBRef
+    private Set<Category> categories = new HashSet<>();
+
+    public void setNotes(Notes notes) {
         if (notes != null) {
             this.notes = notes;
-            notes.setRecipe(this);
         }
     }
 
-    public void addIngredient(final Ingredient ingredient) {
-        ingredient.setRecipe(this);
+    public Recipe addIngredient(Ingredient ingredient){
         this.ingredients.add(ingredient);
+        return this;
     }
 }

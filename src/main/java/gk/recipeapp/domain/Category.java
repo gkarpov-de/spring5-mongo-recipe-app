@@ -1,7 +1,5 @@
 package gk.recipeapp.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -19,5 +17,5 @@ public class Category {
     private String description;
 
     @DBRef
-    private Set<Recipe> recipe;
+    private Set<Recipe> recipes;
 }

@@ -86,7 +86,6 @@ public class IngredientServiceImpl implements IngredientService {
             if (ingredient == null) {
                 throw new RuntimeException("IngredientCommand to Ingredient conversion failed. Null returned");
             }
-            ingredient.setRecipe(recipe);
             recipe.addIngredient(ingredient);
         }
 
@@ -141,7 +140,6 @@ public class IngredientServiceImpl implements IngredientService {
         log.debug("Ingredient id: {} found", ingredientId);
         final Ingredient ingredientToDelete = optionalIngredient.get();
 
-        ingredientToDelete.setRecipe(null);
         recipe.getIngredients().remove(ingredientToDelete);
         recipeRepository.save(recipe);
     }

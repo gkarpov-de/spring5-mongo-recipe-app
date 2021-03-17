@@ -2,11 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"
-          th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"
+          th:href="@{/webjars/bootstrap/4.5.2/css/bootstrap.min.css}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-            th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+            th:src="@{/webjars/bootstrap/4.5.2/js/bootstrap.min.js}"></script>
     <link href="/css/styles.css" rel="stylesheet" type="text/css">
     <title>Recipe Form</title>
 </head>
@@ -19,12 +19,12 @@
                     <p>Please Correct Errors Below</p>
                 </div>
                 <input th:field="*{id}" type="hidden"/>
-                <div class="panel-group">
-                    <div class="panel panel-primary description-panel">
-                        <div class="panel-heading">
+                <div class="card-group">
+                    <div class="card card-primary description-card">
+                        <div class="card-header">
                             <div class="row">
                                 <div class="col-md-10">
-                                    <h1 class="panel-title">Edit Recipe</h1>
+                                    <h1 class="">Edit Recipe</h1>
                                 </div>
                                 <div class="col-md-1">
                                     <a class="btn btn-default" href="#"
@@ -32,13 +32,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="panel-body">
+                        <div class="card-body">
                             <div class="row">
                                 <div class="col-md-3 form-group" th:class="${#fields.hasErrors('description')}
                                 ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
                                     <label th:text="#{recipe.description}">Recipe Description:</label>
-                                        <input class="form-control" th:errorclass="has-error" th:field="*{description}"
-                                               type="text"/>
+                                    <input class="form-control" th:errorclass="has-error" th:field="*{description}"
+                                           type="text"/>
                                     <div class="help-block" th:if="${#fields.hasErrors('description')}">
                                         <ul>
                                             <li th:each="err : ${#fields.errors('description')}" th:text="${err}"></li>
@@ -75,10 +75,11 @@
                                 ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
                                     <label th:text="#{recipe.prepTime}">Prep Time:</label>
                                     <input class="form-control" th:errorclass="has-error" th:field="*{prepTime}"
-                                    type="text"/>
+                                           type="text"/>
                                     <div class="help-block" th:if="${#fields.hasErrors('prepTime')}">
                                         <ul>
-                                            ß<li th:each="err : ${#fields.errors('prepTime')}" th:text="${err}"></li>
+                                            ß
+                                            <li th:each="err : ${#fields.errors('prepTime')}" th:text="${err}"></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -86,10 +87,11 @@
                                 ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
                                     <label th:text="#{recipe.cookTime}">Cooktime:</label>
                                     <input class="form-control" th:errorclass="has-error" th:field="*{cookTime}"
-                                    type="text"/>
+                                           type="text"/>
                                     <div class="help-block" th:if="${#fields.hasErrors('cookTime')}">
                                         <ul>
-                                            ß<li th:each="err : ${#fields.errors('cookTime')}" th:text="${err}"></li>
+                                            ß
+                                            <li th:each="err : ${#fields.errors('cookTime')}" th:text="${err}"></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -141,11 +143,11 @@
                     </div>
                 </div>
 
-                <div class="panel panel-primary ingredients-panel">
-                    <div class="panel-heading">
+                <div class="card card-primary ingredients-card">
+                    <div class="card-header">
                         <div class="row">
                             <div class="col-md-11">
-                                <h1 class="panel-title">Ingredients</h1>
+                                <h1 class="card-title">Ingredients</h1>
                             </div>
                             <div class="col-md-1">
                                 <a class="btn btn-default" href="#"
@@ -153,7 +155,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
                                 <ul>
@@ -169,11 +171,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="panel panel-primary directions-panel">
-                    <div class="panel-heading">
-                        <h1 class="panel-title">Directions</h1>
+                <div class="card card-primary directions-card">
+                    <div class="card-header">
+                        <h1 class="card-title">Directions</h1>
                     </div>
-                    <div class="panel-body direction">
+                    <div class="card-body direction">
                         <div class="row">
                             <div class="col-md-12 form-group"
                                  th:class="${#fields.hasErrors('directions')} ? 'col-md-12 form-group has error': 'col-md-12 form-group'">
@@ -188,11 +190,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h1 class="panel-title">Notes</h1>
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h1 class="card-title">Notes</h1>
                     </div>
-                    <div class="panel-body notes-panel">
+                    <div class="card-body notes-card">
                         <div class="row">
                             <div class="col-md-12 form-group">
                                     <textarea class="form-control" name="notes" rows="3"

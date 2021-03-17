@@ -2,11 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"
-          th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"
+          th:href="@{/webjars/bootstrap/4.5.2/css/bootstrap.min.css}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-            th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+            th:src="@{/webjars/bootstrap/4.5.2/js/bootstrap.min.js}"></script>
     <link href="/css/styles.css" rel="stylesheet" type="text/css">
     <title>Image upload</title>
 </head>
@@ -14,12 +14,12 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <div class="panel-group">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h1 class="panel-title">Upload a new recipe image</h1>
+            <div class="card-group">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h1 class="card-title">Upload a new recipe image</h1>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
                                 <form action="http:\\localhost" enctype="multipart/form-data" method="post"

@@ -2,11 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"
-          th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"
+          th:href="@{/webjars/bootstrap/4.5.2/css/bootstrap.min.css}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-            th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+            th:src="@{/webjars/bootstrap/4.5.2/js/bootstrap.min.js}"></script>
     <link href="/css/styles.css" rel="stylesheet" type="text/css">
     <title>Recipe</title>
 </head>
@@ -14,12 +14,12 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
-            <div class="panel-group">
-                <div class="panel panel-primary description-panel">
-                    <div class="panel-heading">
-                        <h1 class="panel-title" th:text="${recipe.description}">Recipe Description</h1>
+            <div class="card-group">
+                <div class="card card-primary description-card">
+                    <div class="card-header">
+                        <h1 class="card-title" th:text="${recipe.description}">Recipe Description</h1>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                         <div class="row">
                             <div class="col-md-3">
                                 <h5>Categories:</h5>
@@ -85,12 +85,12 @@
 
                     </div>
                 </div>
-                <div class="panel panel-primary ingredients-panel">
-                    <div class="panel-heading">
-                        <div class="panel-heading">
+                <div class="card card-primary ingredients-card">
+                    <div class="card-header">
+                        <div class="card-header">
                             <div class="row">
                                 <div class="col-md-11">
-                                    <h1 class="panel-title">Ingredients</h1>
+                                    <h1 class="card-title">Ingredients</h1>
                                 </div>
                                 <div class="col-md-1">
                                     <a class="btn btn-default" href="#"
@@ -99,7 +99,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
                                 <ul>
@@ -117,11 +117,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h1 class="panel-title">Directions</h1>
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h1 class="card-title">Directions</h1>
                     </div>
-                    <div class="panel-body direction">
+                    <div class="card-body direction">
                         <div class="row">
                             <div class="col-md-12"><p th:text="${recipe.directions}">Lorem ipsum dolor sit amet,
                                 consectetur adipisicing elit.
@@ -145,11 +145,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h1 class="panel-title">Notes</h1>
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h1 class="card-title">Notes</h1>
                     </div>
-                    <div class="panel-body notes-panel"
+                    <div class="card-body notes-card"
                     >
                         <div class="row">
                             <div class="col-md-12"><p th:text="${recipe.notes.recipeNotes}">
