@@ -50,7 +50,9 @@ public class IngredientController {
 
         //make sure we have a good id value
         final RecipeCommand recipeCommand = recipeService.findCommandById(recipeId);
-        //todo raise exception if null
+        if (recipeCommand == null) {
+            throw new RuntimeException("DB error: recipe id: " + recipeId + " not found");
+        }
 
         //need to return back parent id for hidden form property
         final IngredientCommand ingredientCommand = new IngredientCommand();

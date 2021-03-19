@@ -3,7 +3,6 @@ package gk.recipeapp.converters;
 import gk.recipeapp.commands.IngredientCommand;
 import gk.recipeapp.commands.UnitOfMeasureCommand;
 import gk.recipeapp.domain.Ingredient;
-import gk.recipeapp.domain.Recipe;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,10 +11,8 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class IngredientCommandToIngredientTest {
-    private static final Recipe RECIPE = new Recipe();
     private static final BigDecimal AMOUNT = new BigDecimal("1");
     private static final String DESCRIPTION = "Cheeseburger";
-    private static final String ID_VALUE = "1";
     private static final String UOM_ID = "2";
 
     IngredientCommandToIngredient converter;
@@ -26,7 +23,7 @@ public class IngredientCommandToIngredientTest {
     }
 
     @Test
-    public void testNullObject() throws Exception {
+    public void testNullObject() {
         assertNull(converter.convert(null));
     }
 
@@ -57,12 +54,11 @@ public class IngredientCommandToIngredientTest {
     }
 
     @Test
-    public void convertWithNullUOM() throws Exception {
+    public void convertWithNullUOM() {
         //given
         final IngredientCommand command = new IngredientCommand();
         command.setAmount(AMOUNT);
         command.setDescription(DESCRIPTION);
-        final UnitOfMeasureCommand unitOfMeasureCommand = new UnitOfMeasureCommand();
 
 
         //when

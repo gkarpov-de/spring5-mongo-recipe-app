@@ -5,7 +5,6 @@ import gk.recipeapp.domain.Recipe;
 import gk.recipeapp.exceptions.NotFoundException;
 import gk.recipeapp.services.RecipeService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -66,18 +65,9 @@ public class RecipeControllerTest {
                 .andExpect(view().name("404error"));
     }
 
-    @Disabled
     @Test
-    @DisplayName("get recipe number format exception test")
-    void getRecipeNumberFormatExceptionTest() throws Exception {
-        mockMvc.perform(get("/recipe/asdasd/show"))
-                .andExpect(status().isBadRequest())
-                .andExpect(view().name("400error"));
-    }
-
-    @Test
-    @DisplayName("test get new recipe form")
-    void testGetNewRecipeForm() throws Exception {
+    @DisplayName("get new recipe form test")
+    void getNewRecipeFormTest() throws Exception {
         mockMvc.perform(get("/recipe/new"))
                 .andExpect(status().isOk())
                 .andExpect(view().name(RECIPE_RECIPEFORM_URL))
@@ -85,8 +75,8 @@ public class RecipeControllerTest {
     }
 
     @Test
-    @DisplayName("test post recipe form")
-    void testPostRecipeForm() throws Exception {
+    @DisplayName("post recipe form test")
+    void postRecipeFormTest() throws Exception {
         final RecipeCommand recipeCommand = new RecipeCommand();
         recipeCommand.setId(ID_VALUE);
 
@@ -101,10 +91,9 @@ public class RecipeControllerTest {
                 .andExpect(view().name("redirect:/recipe/" + ID_VALUE + "/show"));
     }
 
-    @Disabled
     @Test
-    @DisplayName("test post new recipe form validation fail")
-    void testPostNewRecipeFormValidationFail() throws Exception {
+    @DisplayName("post new recipe form validation fail test")
+    void postNewRecipeFormValidationFailTest() throws Exception {
         final RecipeCommand recipeCommand = new RecipeCommand();
         recipeCommand.setId(ID_VALUE);
 

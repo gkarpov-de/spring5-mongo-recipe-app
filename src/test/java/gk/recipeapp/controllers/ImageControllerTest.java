@@ -4,7 +4,6 @@ import gk.recipeapp.commands.RecipeCommand;
 import gk.recipeapp.services.ImageService;
 import gk.recipeapp.services.RecipeService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -97,14 +96,4 @@ public class ImageControllerTest {
 
         assertEquals(str.getBytes().length, responseByte.length);
     }
-
-    @Disabled
-    @Test
-    @DisplayName("get Image number format exception test")
-    void getImageNumberFormatExceptionTest() throws Exception {
-        mockMvc.perform(get("/recipe/asdfasdf/recipeimage"))
-                .andExpect(status().isBadRequest())
-                .andExpect(view().name("400error"));
-    }
-
 }
