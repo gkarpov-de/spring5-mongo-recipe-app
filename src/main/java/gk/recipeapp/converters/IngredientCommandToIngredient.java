@@ -2,7 +2,7 @@ package gk.recipeapp.converters;
 
 import gk.recipeapp.commands.IngredientCommand;
 import gk.recipeapp.domain.Ingredient;
-import lombok.Synchronized;
+import gk.recipeapp.domain.Recipe;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,6 @@ public class IngredientCommandToIngredient implements Converter<IngredientComman
         this.unitOfMeasureCommandToUnitOfMeasure = unitOfMeasureCommandToUnitOfMeasure;
     }
 
-    @Synchronized
     @Nullable
     @Override
     public Ingredient convert(@Nullable final IngredientCommand ingredientCommand) {
@@ -24,7 +23,18 @@ public class IngredientCommandToIngredient implements Converter<IngredientComman
         }
 
         final Ingredient ingredient = new Ingredient();
-        ingredient.setId(ingredientCommand.getId());
+
+        final String ingredientCommandId = ingredientCommand.getId();
+        if (ingredientCommandId != null && !ingredientCommandId.isEmpty()) {
+            ingredient.setId(ingredientCommandId);
+        }
+
+        if (ingredientCommand.getRecipeId() != null) {
+            final Recipe recipe = new Recipe();
+            recipe.setId(ingredientCommand.getRecipeId());
+            recipe.addIngredient(ingredient);
+        }
+
         ingredient.setDescription(ingredientCommand.getDescription());
         ingredient.setUom(unitOfMeasureCommandToUnitOfMeasure.convert(ingredientCommand.getUom()));
         ingredient.setAmount(ingredientCommand.getAmount());

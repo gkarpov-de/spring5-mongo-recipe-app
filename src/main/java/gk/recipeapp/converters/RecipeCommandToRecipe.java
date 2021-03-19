@@ -1,15 +1,11 @@
 package gk.recipeapp.converters;
 
-import gk.recipeapp.commands.CategoryCommand;
-import gk.recipeapp.commands.IngredientCommand;
 import gk.recipeapp.commands.RecipeCommand;
 import gk.recipeapp.domain.Recipe;
 import lombok.Synchronized;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
-
-import java.util.Set;
 
 @Component
 public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
@@ -45,13 +41,13 @@ public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
         recipe.setUrl(source.getUrl());
         recipe.setNotes(notesConverter.convert(source.getNotes()));
 
-        final Set<CategoryCommand> categoryCommandSet = source.getCategories();
+        final var categoryCommandSet = source.getCategories();
         if (categoryCommandSet != null && categoryCommandSet.size() > 0) {
             categoryCommandSet
                     .forEach(category -> recipe.getCategories().add(categoryConverter.convert(category)));
         }
 
-        final Set<IngredientCommand> ingredientsCommandSet = source.getIngredients();
+        final var ingredientsCommandSet = source.getIngredients();
         if (ingredientsCommandSet != null && ingredientsCommandSet.size() > 0) {
             ingredientsCommandSet
                     .forEach(ingredient -> recipe.getIngredients().add(ingredientConverter.convert(ingredient)));

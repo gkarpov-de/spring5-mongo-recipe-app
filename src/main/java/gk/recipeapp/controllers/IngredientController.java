@@ -17,71 +17,80 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Log4j2
 @Controller
 public class IngredientController {
-    private final RecipeService recipeService;
+
     private final IngredientService ingredientService;
+    private final RecipeService recipeService;
     private final UnitOfMeasureService unitOfMeasureService;
 
-    public IngredientController(final RecipeService recipeService, final IngredientService ingredientService, final UnitOfMeasureService unitOfMeasureService) {
-        this.recipeService = recipeService;
+    public IngredientController(final IngredientService ingredientService, final RecipeService recipeService, final UnitOfMeasureService unitOfMeasureService) {
         this.ingredientService = ingredientService;
+        this.recipeService = recipeService;
         this.unitOfMeasureService = unitOfMeasureService;
     }
 
     @GetMapping("/recipe/{recipeId}/ingredients")
-    public String showIngredients(@PathVariable final String recipeId, final Model model) {
-        log.debug("Getting ingredient list for recipe id: {}", recipeId);
-        model.addAttribute("recipe", recipeService.findCommandByID(recipeId));
+    public String listIngredients(@PathVariable final String recipeId, final Model model) {
+        log.debug("Getting ingredient list for recipe id: " + recipeId);
+
+        // use command object to avoid lazy load errors in Thymeleaf.
+        model.addAttribute("recipe", recipeService.findCommandById(recipeId));
+
         return "recipe/ingredient/list";
     }
 
-    @GetMapping("/recipe/{recipeId}/ingredient/{ingredientId}/show")
-    public String showIngredient(@PathVariable final String recipeId, @PathVariable final String ingredientId, final Model model) {
-        log.debug("Getting ingredient id: {} from recipe id: {}", ingredientId, recipeId);
-        model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(recipeId, ingredientId));
+    @GetMapping("recipe/{recipeId}/ingredient/{id}/show")
+    public String showRecipeIngredient(@PathVariable final String recipeId,
+                                       @PathVariable final String id, final Model model) {
+        model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(recipeId, id));
         return "recipe/ingredient/show";
     }
 
-    @GetMapping("/recipe/{recipeId}/ingredient/new")
-    public String newIngredient(@PathVariable final String recipeId, final Model model) {
-        log.debug("Creating new ingredient for recipe id: {}", recipeId);
-        final RecipeCommand recipeCommand = recipeService.findCommandByID(recipeId);
-        if (recipeCommand == null) {
-            throw new RuntimeException("Recipe id: " + recipeId + " not found.");
-        }
+    @GetMapping("recipe/{recipeId}/ingredient/new")
+    public String newRecipe(@PathVariable final String recipeId, final Model model) {
 
+        //make sure we have a good id value
+        final RecipeCommand recipeCommand = recipeService.findCommandById(recipeId);
+        //todo raise exception if null
+
+        //need to return back parent id for hidden form property
         final IngredientCommand ingredientCommand = new IngredientCommand();
         ingredientCommand.setRecipeId(recipeId);
-
         model.addAttribute("ingredient", ingredientCommand);
 
+        //init uom
         ingredientCommand.setUom(new UnitOfMeasureCommand());
+
         model.addAttribute("uomList", unitOfMeasureService.listAllUoms());
 
         return "recipe/ingredient/ingredientform";
     }
 
-    @GetMapping("/recipe/{recipeId}/ingredient/{ingredientId}/update")
-    public String updateRecipeIngredient(@PathVariable final String recipeId, @PathVariable final String ingredientId, final Model model) {
-        model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(recipeId, ingredientId));
-        model.addAttribute("uomList", unitOfMeasureService.listAllUoms());
+    @GetMapping("recipe/{recipeId}/ingredient/{id}/update")
+    public String updateRecipeIngredient(@PathVariable final String recipeId,
+                                         @PathVariable final String id, final Model model) {
+        log.warn("Recipe id: {}, ingredient id: {}", recipeId, id);
+        model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(recipeId, id));
 
+        model.addAttribute("uomList", unitOfMeasureService.listAllUoms());
         return "recipe/ingredient/ingredientform";
     }
 
     @PostMapping("recipe/{recipeId}/ingredient")
-    public String saveOrUpdateIngredient(@ModelAttribute final IngredientCommand ingredientCommand) {
-        final IngredientCommand savedIngredientCommand = ingredientService.saveIngredientCommand(ingredientCommand);
+    public String saveOrUpdate(@ModelAttribute final IngredientCommand command) {
+        final IngredientCommand savedCommand = ingredientService.saveIngredientCommand(command);
 
-        final String ingredientCommandId = savedIngredientCommand.getId();
-        final String recipeId = savedIngredientCommand.getRecipeId();
-        log.debug("saved ingredient id: {}, recipe id: {}", ingredientCommandId, recipeId);
+        log.debug("saved ingredient id:" + savedCommand.getId());
 
-        return "redirect:/recipe/" + recipeId + "/ingredient/" + ingredientCommandId + "/show";
+        return "redirect:/recipe/" + savedCommand.getRecipeId() + "/ingredient/" + savedCommand.getId() + "/show";
     }
 
-    @GetMapping("recipe/{recipeId}/ingredient/{ingredientId}/delete")
-    public String deleteIngredient(@PathVariable final String recipeId, @PathVariable final String ingredientId) {
-        ingredientService.deleteById(recipeId, ingredientId);
+    @GetMapping("recipe/{recipeId}/ingredient/{id}/delete")
+    public String deleteIngredient(@PathVariable final String recipeId,
+                                   @PathVariable final String id) {
+
+        log.debug("deleting ingredient id:" + id);
+        ingredientService.deleteById(recipeId, id);
+
         return "redirect:/recipe/" + recipeId + "/ingredients";
     }
 }

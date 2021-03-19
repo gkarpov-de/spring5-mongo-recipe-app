@@ -1,7 +1,6 @@
 package gk.recipeapp.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -9,8 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.HashSet;
 import java.util.Set;
 
-@Getter
-@Setter
+@Data
 @Document
 public class Recipe {
 
@@ -31,14 +29,13 @@ public class Recipe {
     @DBRef
     private Set<Category> categories = new HashSet<>();
 
-    public void setNotes(Notes notes) {
+    public void setNotes(final Notes notes) {
         if (notes != null) {
             this.notes = notes;
         }
     }
 
-    public Recipe addIngredient(Ingredient ingredient){
+    public void addIngredient(final Ingredient ingredient) {
         this.ingredients.add(ingredient);
-        return this;
     }
 }

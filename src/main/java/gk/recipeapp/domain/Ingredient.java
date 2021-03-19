@@ -1,18 +1,17 @@
 package gk.recipeapp.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
-@Getter
-@Setter
+@Data
 public class Ingredient {
-
     @Id
-    private String id;
+    private String id = UUID.randomUUID().toString();
+    
     private String description;
     private BigDecimal amount;
 
@@ -22,13 +21,13 @@ public class Ingredient {
     public Ingredient() {
     }
 
-    public Ingredient(String description, BigDecimal amount, UnitOfMeasure uom) {
+    public Ingredient(final String description, final BigDecimal amount, final UnitOfMeasure uom) {
         this.description = description;
         this.amount = amount;
         this.uom = uom;
     }
 
-    public Ingredient(String description, BigDecimal amount, UnitOfMeasure uom, Recipe recipe) {
+    public Ingredient(final String description, final BigDecimal amount, final UnitOfMeasure uom, final Recipe recipe) {
         this.description = description;
         this.amount = amount;
         this.uom = uom;

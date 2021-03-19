@@ -1,11 +1,9 @@
 package gk.recipeapp.commands;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class CategoryCommand {
     private String id;

@@ -63,20 +63,25 @@ public class RecipeCommandToRecipeTest {
 
         final NotesCommand notes = new NotesCommand();
         notes.setId(NOTES_ID);
+
         recipeCommand.setNotes(notes);
 
-        final CategoryCommand category1 = new CategoryCommand();
-        category1.setId(CAT_ID1);
+        final CategoryCommand category = new CategoryCommand();
+        category.setId(CAT_ID1);
+
         final CategoryCommand category2 = new CategoryCommand();
         category2.setId(CAT_ID2);
-        recipeCommand.getCategories().add(category1);
+
+        recipeCommand.getCategories().add(category);
         recipeCommand.getCategories().add(category2);
 
-        final IngredientCommand ingredient1 = new IngredientCommand();
-        ingredient1.setId(INGREDIENT_ID1);
+        final IngredientCommand ingredient = new IngredientCommand();
+        ingredient.setId(INGREDIENT_ID1);
+
         final IngredientCommand ingredient2 = new IngredientCommand();
         ingredient2.setId(INGREDIENT_ID2);
-        recipeCommand.getIngredients().add(ingredient1);
+
+        recipeCommand.getIngredients().add(ingredient);
         recipeCommand.getIngredients().add(ingredient2);
 
         //when
@@ -98,4 +103,3 @@ public class RecipeCommandToRecipeTest {
     }
 
 }
-

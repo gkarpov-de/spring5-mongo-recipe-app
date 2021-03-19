@@ -35,13 +35,11 @@ public class NotesCommandToNotesTest {
     @DisplayName("test conversion")
     void testConversion() {
         final NotesCommand notesCommand = new NotesCommand();
-        notesCommand.setId(ID_VALUE);
         notesCommand.setRecipeNotes(RECIPE_NOTES);
 
         final Notes notes = converter.convert(notesCommand);
 
         assertNotNull(notes);
-        assertEquals(ID_VALUE, notes.getId());
         assertEquals(RECIPE_NOTES, notes.getRecipeNotes());
     }
 }
