@@ -2,12 +2,13 @@ package gk.recipeapp.services;
 
 import gk.recipeapp.commands.IngredientCommand;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 @Service
 public interface IngredientService {
-    IngredientCommand findByRecipeIdAndIngredientId(String recipeId, String ingredientId);
+    Mono<IngredientCommand> findByRecipeIdAndIngredientId(String recipeId, String ingredientId);
 
-    IngredientCommand saveIngredientCommand(IngredientCommand command);
+    Mono<IngredientCommand> saveIngredientCommand(IngredientCommand command);
 
-    void deleteById(String recipeId, String idToDelete);
+    Mono<Void> deleteById(String recipeId, String idToDelete);
 }

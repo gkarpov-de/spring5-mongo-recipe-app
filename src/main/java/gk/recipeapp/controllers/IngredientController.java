@@ -3,6 +3,7 @@ package gk.recipeapp.controllers;
 import gk.recipeapp.commands.IngredientCommand;
 import gk.recipeapp.commands.RecipeCommand;
 import gk.recipeapp.commands.UnitOfMeasureCommand;
+import gk.recipeapp.exceptions.NotFoundException;
 import gk.recipeapp.services.IngredientService;
 import gk.recipeapp.services.RecipeService;
 import gk.recipeapp.services.UnitOfMeasureService;
@@ -41,7 +42,7 @@ public class IngredientController {
     @GetMapping("recipe/{recipeId}/ingredient/{id}/show")
     public String showRecipeIngredient(@PathVariable final String recipeId,
                                        @PathVariable final String id, final Model model) {
-        model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(recipeId, id));
+        model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(recipeId, id).block());
         return "recipe/ingredient/show";
     }
 
@@ -51,7 +52,7 @@ public class IngredientController {
         //make sure we have a good id value
         final RecipeCommand recipeCommand = recipeService.findCommandById(recipeId);
         if (recipeCommand == null) {
-            throw new RuntimeException("DB error: recipe id: " + recipeId + " not found");
+            throw new NotFoundException("DB error: recipe id: " + recipeId + " not found");
         }
 
         //need to return back parent id for hidden form property
@@ -62,7 +63,7 @@ public class IngredientController {
         //init uom
         ingredientCommand.setUom(new UnitOfMeasureCommand());
 
-        model.addAttribute("uomList", unitOfMeasureService.listAllUoms());
+        model.addAttribute("uomList", unitOfMeasureService.listAllUoms().collectList().block());
 
         return "recipe/ingredient/ingredientform";
     }
@@ -71,15 +72,15 @@ public class IngredientController {
     public String updateRecipeIngredient(@PathVariable final String recipeId,
                                          @PathVariable final String id, final Model model) {
         log.warn("Recipe id: {}, ingredient id: {}", recipeId, id);
-        model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(recipeId, id));
+        model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(recipeId, id).block());
 
-        model.addAttribute("uomList", unitOfMeasureService.listAllUoms());
+        model.addAttribute("uomList", unitOfMeasureService.listAllUoms().collectList().block());
         return "recipe/ingredient/ingredientform";
     }
 
     @PostMapping("recipe/{recipeId}/ingredient")
     public String saveOrUpdate(@ModelAttribute final IngredientCommand command) {
-        final IngredientCommand savedCommand = ingredientService.saveIngredientCommand(command);
+        final IngredientCommand savedCommand = ingredientService.saveIngredientCommand(command).block();
 
         log.debug("saved ingredient id:" + savedCommand.getId());
 
@@ -91,7 +92,7 @@ public class IngredientController {
                                    @PathVariable final String id) {
 
         log.debug("deleting ingredient id:" + id);
-        ingredientService.deleteById(recipeId, id);
+        ingredientService.deleteById(recipeId, id).block();
 
         return "redirect:/recipe/" + recipeId + "/ingredients";
     }

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
@@ -29,6 +30,9 @@ class IndexControllerTest {
 
     @Mock
     Model model;
+
+    @Captor
+    ArgumentCaptor<Set<Recipe>> argumentCaptor;
 
     IndexController indexController;
 
@@ -60,8 +64,7 @@ class IndexControllerTest {
         recipeSet.add(new Recipe());
 
         when(recipeService.getRecipes()).thenReturn(recipeSet);
-
-        final ArgumentCaptor<Set<Recipe>> argumentCaptor = ArgumentCaptor.forClass(Set.class);
+//        @Captor final ArgumentCaptor<Set<Recipe>> argumentCaptor = ArgumentCaptor.forClass(Set<Recipe>.class);
         // when
         final String viewName = indexController.getIndexPage(model);
 

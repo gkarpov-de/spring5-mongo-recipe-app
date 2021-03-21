@@ -2,11 +2,10 @@ package gk.recipeapp.services;
 
 import gk.recipeapp.commands.UnitOfMeasureCommand;
 import org.springframework.stereotype.Service;
-
-import java.util.Set;
+import reactor.core.publisher.Flux;
 
 @Service
 public interface UnitOfMeasureService {
 
-    Set<UnitOfMeasureCommand> listAllUoms();
+    Flux<UnitOfMeasureCommand> listAllUoms();
 }

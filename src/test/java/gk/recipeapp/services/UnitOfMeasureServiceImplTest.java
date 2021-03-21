@@ -3,17 +3,18 @@ package gk.recipeapp.services;
 import gk.recipeapp.commands.UnitOfMeasureCommand;
 import gk.recipeapp.converters.UnitOfMeasureToUnitOfMeasureCommand;
 import gk.recipeapp.domain.UnitOfMeasure;
-import gk.recipeapp.repositories.UnitOfMeasureRepository;
+import gk.recipeapp.repositories.reactive.UnitOfMeasureReactiveRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import reactor.core.publisher.Flux;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 class UnitOfMeasureServiceImplTest {
@@ -23,30 +24,28 @@ class UnitOfMeasureServiceImplTest {
     UnitOfMeasureService unitOfMeasureService;
 
     @Mock
-    UnitOfMeasureRepository unitOfMeasureRepository;
+    UnitOfMeasureReactiveRepository unitOfMeasureReactiveRepository;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        unitOfMeasureService = new UnitOfMeasureServiceImpl(unitOfMeasureRepository, unitOfMeasureToUnitOfMeasureCommand);
+        unitOfMeasureService = new UnitOfMeasureServiceImpl(unitOfMeasureReactiveRepository, unitOfMeasureToUnitOfMeasureCommand);
     }
 
     @Test
     @DisplayName("test list all uom")
     void testListAllUom() {
-        final Set<UnitOfMeasure> unitOfMeasures = new HashSet<>();
-        final UnitOfMeasure unitOfMeasure1 = new UnitOfMeasure();
-        final UnitOfMeasure unitOfMeasure2 = new UnitOfMeasure();
-        unitOfMeasure1.setId(UOM_ID1);
-        unitOfMeasure2.setId(UOM_ID2);
-        unitOfMeasures.add(unitOfMeasure1);
-        unitOfMeasures.add(unitOfMeasure2);
+        final UnitOfMeasure uom1 = new UnitOfMeasure();
+        final UnitOfMeasure uom2 = new UnitOfMeasure();
+        uom1.setId(UOM_ID1);
+        uom2.setId(UOM_ID2);
 
-        when(unitOfMeasureRepository.findAll()).thenReturn(unitOfMeasures);
+        when(unitOfMeasureReactiveRepository.findAll()).thenReturn(Flux.just(uom1, uom2));
 
-        final Set<UnitOfMeasureCommand> commands = unitOfMeasureService.listAllUoms();
+        final List<UnitOfMeasureCommand> commands = unitOfMeasureService.listAllUoms().collectList().block();
 
+        assertNotNull(commands);
         assertEquals(2, commands.size());
-        verify(unitOfMeasureRepository, times(1)).findAll();
+        verify(unitOfMeasureReactiveRepository, times(1)).findAll();
     }
 }
