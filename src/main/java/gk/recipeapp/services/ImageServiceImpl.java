@@ -1,44 +1,44 @@
 package gk.recipeapp.services;
 
 import gk.recipeapp.domain.Recipe;
-import gk.recipeapp.repositories.RecipeRepository;
+import gk.recipeapp.repositories.reactive.RecipeReactiveRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @Log4j2
 @Service
 public class ImageServiceImpl implements ImageService {
-    private final RecipeRepository recipeRepository;
+    private final RecipeReactiveRepository recipeReactiveRepository;
 
-    public ImageServiceImpl(final RecipeRepository recipeRepository) {
-        this.recipeRepository = recipeRepository;
+    public ImageServiceImpl(final RecipeReactiveRepository recipeReactiveRepository) {
+        this.recipeReactiveRepository = recipeReactiveRepository;
     }
 
     @Override
-    public void saveImageFile(final String recipeId, final MultipartFile file) {
+    public Mono<Void> saveImageFile(final String recipeId, final MultipartFile file) {
         log.debug("File: {} received for recipe id: {}", file, recipeId);
-        final Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
-        if (recipeOptional.isEmpty()) {
-            throw new RuntimeException("<saveImageFile> Recipe id: " + recipeId + " not found.");
-        }
-        final Recipe recipe = recipeOptional.get();
+        final Mono<Recipe> recipeMono = recipeReactiveRepository.findById(recipeId)
+                .map(recipe -> {
+                    try {
+                        final int length = file.getBytes().length;
+                        final Byte[] bytes = new Byte[length];
+                        int i = 0;
+                        for (final byte aByte : file.getBytes()) {
+                            bytes[i++] = aByte;
+                        }
+                        recipe.setImage(bytes);
+                        return recipe;
+                    } catch (final IOException e) {
+                        e.printStackTrace();
+                        throw new RuntimeException(e);
+                    }
+                });
+        recipeReactiveRepository.save(recipeMono.block()).block();
 
-        try {
-            final int length = file.getBytes().length;
-            final Byte[] bytes = new Byte[length];
-            int i = 0;
-            for (final byte aByte : file.getBytes()) {
-                bytes[i++] = aByte;
-            }
-            recipe.setImage(bytes);
-        } catch (final IOException e) {
-            // TODO exception handling implementation
-            e.printStackTrace();
-        }
-        recipeRepository.save(recipe);
+        return Mono.empty();
     }
 }

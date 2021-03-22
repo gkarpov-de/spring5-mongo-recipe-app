@@ -34,7 +34,7 @@ public class IngredientController {
         log.debug("Getting ingredient list for recipe id: " + recipeId);
 
         // use command object to avoid lazy load errors in Thymeleaf.
-        model.addAttribute("recipe", recipeService.findCommandById(recipeId));
+        model.addAttribute("recipe", recipeService.findCommandById(recipeId).block());
 
         return "recipe/ingredient/list";
     }
@@ -50,7 +50,7 @@ public class IngredientController {
     public String newRecipe(@PathVariable final String recipeId, final Model model) {
 
         //make sure we have a good id value
-        final RecipeCommand recipeCommand = recipeService.findCommandById(recipeId);
+        final RecipeCommand recipeCommand = recipeService.findCommandById(recipeId).block();
         if (recipeCommand == null) {
             throw new NotFoundException("DB error: recipe id: " + recipeId + " not found");
         }

@@ -12,6 +12,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 
@@ -48,13 +49,13 @@ public class ImageControllerTest {
     void openImageFormTest() throws Exception {
         final RecipeCommand recipeCommand = new RecipeCommand();
         recipeCommand.setId(ID_VALUE);
-        when(recipeService.findCommandByID(anyString())).thenReturn(recipeCommand);
+        when(recipeService.findCommandById(anyString())).thenReturn(Mono.just(recipeCommand));
 
         mockMvc.perform(get("/recipe/" + ID_VALUE + "/image"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("recipe"));
 
-        verify(recipeService, times(1)).findCommandByID(anyString());
+        verify(recipeService, times(1)).findCommandById(anyString());
     }
 
 
@@ -62,6 +63,8 @@ public class ImageControllerTest {
     @DisplayName("handle image post test")
     void handleImagePostTest() throws Exception {
         final MockMultipartFile multipartFile = new MockMultipartFile("imagefile", "test.txt", "text/plain", "Some strange text".getBytes(StandardCharsets.UTF_8));
+
+        when(imageService.saveImageFile(anyString(), any())).thenReturn(Mono.empty());
 
         mockMvc.perform(multipart("/recipe/" + ID_VALUE + "/image").file(multipartFile))
                 .andExpect(status().is3xxRedirection())
@@ -86,7 +89,7 @@ public class ImageControllerTest {
 
         recipeCommand.setImage(bytes);
 
-        when(recipeService.findCommandByID(anyString())).thenReturn(recipeCommand);
+        when(recipeService.findCommandById(anyString())).thenReturn(Mono.just(recipeCommand));
 
         final MockHttpServletResponse response = mockMvc.perform(get("/recipe/" + ID_VALUE + "/recipeimage"))
                 .andExpect(status().isOk())

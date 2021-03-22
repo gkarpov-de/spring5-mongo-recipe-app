@@ -3,21 +3,19 @@ package gk.recipeapp.services;
 import gk.recipeapp.commands.RecipeCommand;
 import gk.recipeapp.domain.Recipe;
 import org.springframework.stereotype.Service;
-
-import java.util.Set;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 
 @Service
 public interface RecipeService {
-    Set<Recipe> getRecipes();
+    Flux<Recipe> getRecipes();
 
-    Recipe findById(final String id);
+    Mono<Recipe> findById(final String id);
 
-    RecipeCommand saveRecipeCommand(final RecipeCommand command);
+    Mono<RecipeCommand> saveRecipeCommand(final RecipeCommand command);
 
-    RecipeCommand findCommandByID(final String id);
+    Mono<Void> deleteById(final String id);
 
-    void deleteById(final String id);
-
-    RecipeCommand findCommandById(final String id);
+    Mono<RecipeCommand> findCommandById(final String id);
 }

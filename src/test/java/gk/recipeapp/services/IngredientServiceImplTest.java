@@ -8,7 +8,6 @@ import gk.recipeapp.converters.UnitOfMeasureCommandToUnitOfMeasure;
 import gk.recipeapp.converters.UnitOfMeasureToUnitOfMeasureCommand;
 import gk.recipeapp.domain.Ingredient;
 import gk.recipeapp.domain.Recipe;
-import gk.recipeapp.repositories.RecipeRepository;
 import gk.recipeapp.repositories.reactive.RecipeReactiveRepository;
 import gk.recipeapp.repositories.reactive.UnitOfMeasureReactiveRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,8 +28,6 @@ public class IngredientServiceImplTest {
     private final IngredientToIngredientCommand ingredientToIngredientCommand;
     private final IngredientCommandToIngredient ingredientCommandToIngredient;
 
-    @Mock
-    RecipeRepository recipeRepository;
 
     @Mock
     RecipeReactiveRepository recipeReactiveRepository;
@@ -51,11 +48,7 @@ public class IngredientServiceImplTest {
         MockitoAnnotations.openMocks(this);
 
         ingredientService = new IngredientServiceImpl(ingredientToIngredientCommand, ingredientCommandToIngredient,
-                recipeReactiveRepository, unitOfMeasureRepository, recipeRepository);
-    }
-
-    @Test
-    public void findByRecipeIdAndId() {
+                recipeReactiveRepository, unitOfMeasureRepository);
     }
 
     @Test
@@ -99,13 +92,11 @@ public class IngredientServiceImplTest {
         command.setUom(new UnitOfMeasureCommand());
         command.getUom().setId("1234");
 
-        final Optional<Recipe> recipeOptional = Optional.of(new Recipe());
-
         final Recipe savedRecipe = new Recipe();
         savedRecipe.addIngredient(new Ingredient());
         savedRecipe.getIngredients().iterator().next().setId("3");
 
-        when(recipeRepository.findById(anyString())).thenReturn(recipeOptional);
+        when(recipeReactiveRepository.findById(anyString())).thenReturn(Mono.just(new Recipe()));
         when(recipeReactiveRepository.save(any())).thenReturn(Mono.just(savedRecipe));
 
         //when
@@ -114,7 +105,7 @@ public class IngredientServiceImplTest {
         //then
         assertNotNull(savedCommand);
         assertEquals("3", savedCommand.getId());
-        verify(recipeRepository, times(1)).findById(anyString());
+        verify(recipeReactiveRepository, times(1)).findById(anyString());
         verify(recipeReactiveRepository, times(1)).save(any(Recipe.class));
 
     }
@@ -122,20 +113,19 @@ public class IngredientServiceImplTest {
     @Test
     public void testDeleteById() {
         //given
-
         final Recipe recipe = new Recipe();
         final Ingredient ingredient = new Ingredient();
         ingredient.setId("3");
         recipe.addIngredient(ingredient);
-        final Optional<Recipe> recipeOptional = Optional.of(recipe);
 
-        when(recipeRepository.findById(anyString())).thenReturn(recipeOptional);
+        when(recipeReactiveRepository.findById(anyString())).thenReturn(Mono.just(recipe));
+        when(recipeReactiveRepository.save(any())).thenReturn(Mono.just(recipe));
 
         //when
         ingredientService.deleteById("1", "3");
 
         //then
-        verify(recipeRepository, times(1)).findById(anyString());
-        verify(recipeRepository, times(1)).save(any(Recipe.class));
+        verify(recipeReactiveRepository, times(1)).findById(anyString());
+        verify(recipeReactiveRepository, times(1)).save(any(Recipe.class));
     }
 }

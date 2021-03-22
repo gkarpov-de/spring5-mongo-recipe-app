@@ -12,6 +12,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import reactor.core.publisher.Mono;
 
 import static gk.recipeapp.controllers.RecipeController.RECIPE_RECIPEFORM_URL;
 import static org.mockito.ArgumentMatchers.any;
@@ -44,7 +45,7 @@ public class RecipeControllerTest {
         final Recipe recipe = new Recipe();
         recipe.setId(ID_VALUE);
 
-        when(recipeService.findById(anyString())).thenReturn(recipe);
+        when(recipeService.findById(anyString())).thenReturn(Mono.just(recipe));
 
         mockMvc.perform(get("/recipe/" + ID_VALUE + "/show"))
                 .andExpect(status().isOk())
@@ -80,7 +81,7 @@ public class RecipeControllerTest {
         final RecipeCommand recipeCommand = new RecipeCommand();
         recipeCommand.setId(ID_VALUE);
 
-        when(recipeService.saveRecipeCommand(any())).thenReturn(recipeCommand);
+        when(recipeService.saveRecipeCommand(any())).thenReturn(Mono.just(recipeCommand));
 
         mockMvc.perform(post("/recipe")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -97,7 +98,7 @@ public class RecipeControllerTest {
         final RecipeCommand recipeCommand = new RecipeCommand();
         recipeCommand.setId(ID_VALUE);
 
-        when(recipeService.saveRecipeCommand(any())).thenReturn(recipeCommand);
+        when(recipeService.saveRecipeCommand(any())).thenReturn(Mono.just(recipeCommand));
 
         mockMvc.perform(post("/recipe")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -114,7 +115,7 @@ public class RecipeControllerTest {
         final RecipeCommand recipeCommand = new RecipeCommand();
         recipeCommand.setId(ID_VALUE);
 
-        when(recipeService.findCommandByID(anyString())).thenReturn(recipeCommand);
+        when(recipeService.findCommandById(anyString())).thenReturn(Mono.just(recipeCommand));
 
         mockMvc.perform(get("/recipe/" + ID_VALUE + "/update"))
                 .andExpect(status().isOk())
